@@ -1,14 +1,33 @@
 {
+  "$schema": "https://turborepo.org/schema.json",
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**"]
+      "dependsOn": [
+        "^build",
+        "$SOME_ENV_VAR"
+      ],
+      "outputs": ["dist/**"]
     },
-    "lint": {
-      "outputs": []
+    "web#build": {
+      "dependsOn": [
+        "^build",
+        "$NEXT_PUBLIC_STRIPE_PUBLIC_KEY",
+        "$NEXT_PUBLIC_ANALYTICS_ID"
+      ],
+      "outputs": [".next/**"]
     },
-    "dev": {
-      "cache": false
+    "docs#build": {
+      "dependsOn": [
+        "^build",
+        "$NEXT_PUBLIC_STRIPE_PUBLIC_KEY",
+        "$NEXT_PUBLIC_ANALYTICS_ID"
+      ],
+      "outputs": [".next/**"]
     }
-  }
+  },
+  "baseBranch": "origin/main",
+  "globalDependencies": [
+    "$GITHUB_TOKEN",
+    "tsconfig.json"
+  ]
 }
